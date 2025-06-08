@@ -1,96 +1,396 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script defer src="/_vercel/insights/script.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"
-    />
-    <title>Vercel HTML Starter</title>
-    <meta
-      name="description"
-      content="High-performance HTML based website template."
-    />
-  </head>
-  <body>
-    <h1>Vercel HTML Starter</h1>
-    <p>
-      This template is a simple, but powerful single
-      <code>index.html</code> file deployed to
-      <a href="https://vercel.com">Vercel</a>. When your site is deployed, all
-      static assets (like HTML, JavaScript, CSS, images, and more) are deployed
-      globally to every
-      <a href="https://vercel.com/docs/concepts/edge-network/overview"
-        >Vercel Edge Network</a
-      >
-      region.
-    </p>
-    <h2>Simple, privacy-friendly analytics</h2>
-    <p>
-      Want to understand your visitor traffic? Vercel Analytics gives you
-      first-party, privacy-friendly traffic analytics for your HTML site. This
-      template is already configured using the following script:
-    </p>
-    <pre><code>&lt;script defer src="/_vercel/insights/script.js"&gt;&lt;/script&gt;</code></pre>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/analytics">Vercel Analytics</a>.
-    </p>
-    <h2>Integrated with git</h2>
-    <p>
-      Deploying updates to your site is as simple as
-      <code>git push</code> thanks to Vercel's advanced
-      <a href="https://vercel.com/docs/concepts/git">Git Integration</a>.
-      Support for GitHub, GitLab, Bitbucket is zero-configuration, and with the
-      flexible Vercel CLI and API, you can integrate with any tool possible.
-    </p>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/docs/concepts/git">Git Integration</a>.
-    </p>
-    <h2>Fast <code>gzip</code> compression</h2>
-    <p>
-      To help ensure the smallest possible file sizes for your static assets,
-      the Vercel Edge Network compresses files by default using
-      <code>gzip</code>. You can also optionally use
-      <code>brotli</code> compressesion if you prefer.
-    </p>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/docs/concepts/edge-network/compression"
-        >compression</a
-      >.
-    </p>
-    <h2>Advanced routing configuration</h2>
-    <p>
-      Vercel gives you a variety of ways to configure the routing of your
-      website. For example, adding redirects, rewrites, or headers to your page.
-      While you can use <code>vercel.json</code> to define these through JSON,
-      you can also express your routing configuration as code using
-      <a href="https://vercel.com/docs/concepts/functions/edge-middleware"
-        >Vercel Edge Middleware</a
-      >.
-    </p>
-    <p>
-      Middleware runs before the
-      <a href="https://vercel.com/docs/concepts/edge-network/caching"
-        >Vercel Edge Network Cache</a
-      >, so you can configure routing exactly as your application needs. For
-      example, this template uses <code>middleware.js</code> defined in the root
-      of the repository to add additional security headers to the site:
-    </p>
-    <pre><code>referrer-policy: origin-when-cross-origin
-strict-transport-security: max-age=31536000; includeSubDomains; preload
-x-content-type-options: nosniff
-x-dns-prefetch-control: on
-x-frame-options: DENY</code></pre>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/docs/concepts/functions/edge-middleware"
-        >Vercel Edge Middleware</a
-      >.
-    </p>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        html,body {
+            font-family: 'Poppins', sans-serif !important;
+            background-color: #e7f7ff;
+            height: 100%; /* Full height for the body and html */
+            margin: 0; /* No margin */
+            padding: 0; /* No padding */
+        }
+
+        #reactionChart{
+            padding: 3%;
+        }
+
+        .clickable-row {
+            cursor: pointer;
+        }
+        
+        .hero-body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #92d5f7;
+            border-bottom: 2px solid #000000;
+            height: 30%;  
+        }
+
+        /* For screens larger than 769px and for print */
+        @media screen and (min-width: 769px), print {
+            .hero-body {
+                padding: unset; /* Resets the padding property */
+            }
+        }
+
+        /* For all screens */
+        .hero-body {
+            flex-grow: unset;   /* Resets the flex-grow property */
+            flex-shrink: unset; /* Resets the flex-shrink property */
+            padding: unset;     /* Resets the padding property */
+        }
+
+        blockquote, body, dd, dl, dt, fieldset, figure, h1, h2, h3, h4, h5, h6, hr, html, iframe, legend, li, ol, p, pre, textarea, ul {
+            margin: unset;   /* Resets the margin property */
+            padding: unset;  /* Resets the padding property */
+        }
+
+        h1.title {
+            font-weight: bold !important;
+        }
+
+        .hero.is-primary .title {
+            color: black; /* Replace with your desired color */
+        }
+
+        #chartTitle {
+            margin-bottom: -2% 0 0 0;
+        }
+
+        .container {
+            width: 100%; /* Full width of the parent */
+            height: 100%; /* Full height of the parent */
+            margin: 0; /* No margin */
+            padding: 0; /* No padding */
+            box-sizing: border-box; /* Include padding/border in width/height */
+            display: block; /* Block-level element */
+        }
+
+        .section{
+            padding:0;
+        }
+
+        .table-container {
+            width: 200%; /* Full width to utilize available space */
+            margin-top: 1.5%; /* Space above the table */
+        }
+
+        .table {
+            width: 100%; /* Full width for the table */
+            border-collapse: collapse; /* Collapse borders for a clean look */
+            table-layout: fixed; /* Fixed table layout for equal column width */
+            border: 1px solid #ddd; /* Border around the entire table */
+        }
+
+        /* Table Header */
+        .table th {
+            background-color: #f4f4f4; /* Light grey background for the header */
+            color: #333; /* Dark text color for contrast */
+            text-align: center; /* Center-align text */
+            border: 1px solid #ddd; /* Border for header cells */
+            padding: 10px; /* Spacing inside header cells */
+        }
+
+        /* Table Data Cells */
+        .table td, .table th {
+            text-align: center; /* Center-align text */
+            padding: 8px; /* Spacing inside data cells */
+            border: 1px solid #ddd; /* Border for data cells */
+            white-space: nowrap; /* Prevent wrapping by default */
+        }
+
+        /* Select column - minimal width */
+        .table th:first-child, 
+        .table td:first-child {
+            width: 5%; /* Set a reasonable width for the Rank column */
+            min-width: 50px; /* Minimum width to ensure content fits */
+        }
+
+        /* Name, Reactions Saved, Reactions Added to VMH, Reactions Created columns - allow more space but limit maximum width */
+        .table th:nth-child(2), .table td:nth-child(2), /* Name column */
+        .table th:nth-child(3), .table td:nth-child(3), /* Reactions Saved column */
+        .table th:nth-child(4), .table td:nth-child(4), /* Reactions Added to VMH column */
+        .table th:nth-child(5), .table td:nth-child(5) { /* Reactions Created column */
+            max-width: 20%; /* Maximum width limit */
+            white-space: normal; /* Allow wrapping */
+            word-wrap: break-word; /* Break words to wrap */
+        }
+
+        /* Additional styles to improve readability */
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9; /* Light grey background for even rows */
+        }
+
+        .table tr:nth-child(odd) {
+            background-color: #e7f7ff;
+        }
+
+        .table tr:hover {
+            background-color: #f1f1f1; /* Slightly darker background on hover */
+        }
+
+        /* Clickable row */
+        .clickable-row {
+            cursor: pointer; /* Show pointer cursor on hover */
+        }
+
+        .clickable-row:hover {
+            background-color: #e2e2e2; /* Highlight row on hover for better visibility */
+        }
+
+        @media screen and (min-width: 1408px) {
+            .container:not(.is-max-desktop):not(.is-max-widescreen) {
+                max-width: none; /* Remove max-width constraint */
+                width: 100%; /* Ensure full width */
+            }
+        }
+
+        @media screen and (min-width: 1216px) {
+            .container:not(.is-max-desktop) {
+                max-width: none; /* Remove max-width constraint */
+                width: 100%; /* Ensure full width */
+            }
+        }
+
+        .logo {
+            float: left; /* Positions the div to the left */
+            height: 6%;
+            width: 6%;
+            margin-left: 1%;
+        }
+
+        .column.is-full {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <section class="hero is-primary">
+        <div class="hero-body">
+            <div class="logo">
+                <!--<img src="website-icon.png" alt="logo">-->
+            </div>
+            <div class="container has-text-centered">
+                <h1 class="title">
+                    Insights
+                </h1>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-full">
+                <canvas id="reactionChart"></canvas>
+            </div>
+        </div>
+        <div class="has-text-centered">
+            <h2 class="title is-4" id="chartTitle">Total Stats</h2>
+        </div>
+        <div class="table-container">
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Reactions Saved</th>
+                        <th>Reactions Added to VMH</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-table-body">
+                    <!-- Rows will be dynamically populated -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for demonstration - replace with your actual API endpoint
+        const sampleData = [
+            { full_name: "John Smith", saved: 150, added: 75 },
+            { full_name: "Jane Doe", saved: 142, added: 68 },
+            { full_name: "Mike Johnson", saved: 138, added: 82 },
+            { full_name: "Sarah Wilson", saved: 135, added: 71 },
+            { full_name: "David Brown", saved: 128, added: 64 },
+            { full_name: "Emily Davis", saved: 122, added: 59 },
+            { full_name: "Chris Miller", saved: 118, added: 73 },
+            { full_name: "Lisa Garcia", saved: 115, added: 56 },
+            { full_name: "Tom Anderson", saved: 112, added: 67 },
+            { full_name: "Amy Taylor", saved: 108, added: 52 }
+        ];
+
+        function loadLeaderBoardData() {
+            // For demonstration, using sample data. Replace with actual fetch call:
+            // fetch('/user-reactions-vmh/')
+            //   .then(response => response.json())
+            //   .then(usersData => {
+            
+            Promise.resolve(sampleData)
+                .then(usersData => {
+                    // Sort usersData by reactions saved (descending) and limit to top 10
+                    usersData.sort((a, b) => b.saved - a.saved);
+                    usersData = usersData.slice(0, 10);
+
+                    // Populate the table
+                    const tableBody = document.getElementById('leaderboard-table-body');
+                    if (tableBody) {
+                        tableBody.innerHTML = ''; // Clear existing rows
+
+                        usersData.forEach((user, index) => {
+                            const row = document.createElement('tr');
+                            row.classList.add('clickable-row');
+                            row.setAttribute('data-name', user.full_name);
+                            row.setAttribute('data-saved', user.saved);
+                            row.setAttribute('data-added', user.added);
+
+                            row.innerHTML = `
+                                <th>${index + 1}</th>
+                                <td>${user.full_name}</td>
+                                <td>${user.saved}</td>
+                                <td>${user.added}</td>
+                            `;
+                            tableBody.appendChild(row);
+                        });
+
+                        // Create the chart
+                        const ctx = document.getElementById('reactionChart');
+                        if (ctx) {
+                            const chartContext = ctx.getContext('2d');
+                            if (chartContext) {
+                                let reactionChart = new Chart(chartContext, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: usersData.map(user => user.full_name),
+                                        datasets: [
+                                            {
+                                                label: 'Reactions Saved',
+                                                data: usersData.map(user => user.saved),
+                                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                                borderColor: 'rgba(75, 192, 192, 1)',
+                                                borderWidth: 1
+                                            },
+                                            {
+                                                label: 'Reactions Added to VMH',
+                                                data: usersData.map(user => user.added),
+                                                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                                borderColor: 'rgba(153, 102, 255, 1)',
+                                                borderWidth: 1
+                                            }
+                                        ]
+                                    },
+                                    options: {
+                                        scales: {
+                                            x: {
+                                                ticks: {
+                                                    autoSkip: false,
+                                                }
+                                            },
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+
+                                // Event listener for row click
+                                document.querySelectorAll('.clickable-row').forEach(row => {
+                                    row.addEventListener('click', () => {
+                                        const name = row.getAttribute('data-name');
+                                        const saved = row.getAttribute('data-saved');
+                                        const added = row.getAttribute('data-added');
+
+                                        reactionChart.data.labels = ['Reactions Saved', 'Reactions Added to VMH'];
+                                        reactionChart.data.datasets = [{
+                                            label: `${name}'s Stats`,
+                                            data: [saved, added],
+                                            backgroundColor: [
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                            ],
+                                            borderColor: [
+                                                'rgba(75, 192, 192, 1)',
+                                                'rgba(153, 102, 255, 1)',
+                                            ],
+                                            borderWidth: 1
+                                        }];
+                                        reactionChart.update();
+
+                                        document.getElementById('chartTitle').innerText = `${name}'s Stats`;
+                                    });
+
+                                    // Event listener for row double-click to reset the chart
+                                    row.addEventListener('dblclick', () => {
+                                        document.getElementById('chartTitle').innerText = 'Total Stats';
+                                        reactionChart.data.labels = usersData.map(user => user.full_name);
+                                        reactionChart.data.datasets = [
+                                            {
+                                                label: 'Reactions Saved',
+                                                data: usersData.map(user => user.saved),
+                                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                                borderColor: 'rgba(75, 192, 192, 1)',
+                                                borderWidth: 1
+                                            },
+                                            {
+                                                label: 'Reactions Added to VMH',
+                                                data: usersData.map(user => user.added),
+                                                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                                borderColor: 'rgba(153, 102, 255, 1)',
+                                                borderWidth: 1
+                                            }
+                                        ];
+                                        reactionChart.update();
+                                    });
+                                });
+
+                                // Initial total stats
+                                document.getElementById('chartTitle').innerText = 'Total Stats';
+                                reactionChart.data.labels = usersData.map(user => user.full_name);
+                                reactionChart.data.datasets = [
+                                    {
+                                        label: 'Reactions Saved',
+                                        data: usersData.map(user => user.saved),
+                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                        borderColor: 'rgba(75, 192, 192, 1)',
+                                        borderWidth: 1
+                                    },
+                                    {
+                                        label: 'Reactions Added to VMH',
+                                        data: usersData.map(user => user.added),
+                                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                        borderColor: 'rgba(153, 102, 255, 1)',
+                                        borderWidth: 1
+                                    }
+                                ];
+                                reactionChart.update();
+                            }
+                        }
+                    } else {
+                        console.error('Error: The table body element was not found.');
+                    }
+                })
+                .catch(error => console.error('Error fetching user data:', error));
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const viewLeaderBoardButton = document.getElementById('view-leader-board');
+            
+            // Add click event for opening leaderboard if the button is present
+            if (viewLeaderBoardButton) {
+                viewLeaderBoardButton.addEventListener('click', () => {
+                    window.open(`${window.location.origin}/stats/`, '_blank');
+                });
+            }
+
+            // Automatically load leaderboard data
+            loadLeaderBoardData();
+        });
+    </script>
+</body>
 </html>
